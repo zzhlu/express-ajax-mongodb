@@ -15,21 +15,21 @@
         getInitialState: function () {
             return {
                 name: '',
-                password: ''
+                password: '',
             }
         },
         nameChange: function (event) {
             const name = event.target.value;
             this.setState({name});
         },
-        passwordChange: function (event) {
+        pswChange: function (event) {
             const password = event.target.value;
             this.setState({password});
         },
-        submit:function () {
-            const input={
-                name:this.state.name,
-                password:this.state.password
+        add: function () {
+            const input = {
+                name: this.state.name,
+                password: this.state.password
             };
             $.ajax({
                 type: "POST",
@@ -38,14 +38,48 @@
                 data: JSON.stringify(input)
             })
         },
+        select: function () {
+            const name = {name: this.state.name};
+            const inputpsw = this.state.password;
+            $.ajax({
+                type: "POST",
+                url: "/data",
+                contentType: 'application/json',
+                data: JSON.stringify(name),
+                success: function (n) {
+                    const password = n[0].password;
+                    if (password === inputpsw) {
+                        console.log("Success!");
+                    } else {
+                        console.log("Fail");
+                    }
+                }
+            });
+        },
+        update: function () {
+
+        },
+        delete: function () {
+            const name = {name: this.state.name};
+            $.ajax({
+                type: "DELETE",
+                url: "/",
+                contentType: 'application/json',
+                data: JSON.stringify(name)
+            });
+        },
         render: function () {
             return <div>
                 name: <input type="text" onChange={this.nameChange}/><br />
-                password: <input type="password" onChange={this.passwordChange}/><br />
-                <button type="submit" onClick={this.submit}>Submit</button>
+                password: <input type="password" onChange={this.pswChange}/><br />
+                <button type="submit" onClick={this.add}>add</button>
+                <button type="submit" onClick={this.select}>select</button>
+                <button type="submit" onClick={this.update}>update</button>
+                <button type="submit" onClick={this.delete}>delete</button>
             </div>
         }
     });
+
     ReactDOM.render(<App />, document.getElementById('content'));
 </script>
 </body>
