@@ -41,17 +41,19 @@
         select: function () {
             const name = {name: this.state.name};
             const inputpsw = this.state.password;
+            let password = '';
             $.ajax({
                 type: "POST",
                 url: "/data",
                 contentType: 'application/json',
                 data: JSON.stringify(name),
                 success: function (n) {
-                    const password = n[0].password;
+                    password = n[0].password;
+                    console.log(inputpsw);
                     if (password === inputpsw) {
-                        console.log("Success!");
+                        alert("Success!");
                     } else {
-                        console.log("Fail");
+                        alert("Fail");
                     }
                 }
             });
