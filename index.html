@@ -16,7 +16,14 @@
             return {
                 name: '',
                 password: '',
+                message: {tel: '', name: '', age: 0}
             }
+        },
+        selectmessage: function () {
+            const name = {name: this.state.name};
+            $.post("/data", name, function (data) {
+                this.setState({message: data[0]});
+            }.bind(this));
         },
         nameChange: function (event) {
             const name = event.target.value;
@@ -78,7 +85,41 @@
                 <button type="submit" onClick={this.select}>select</button>
                 <button type="submit" onClick={this.update}>update</button>
                 <button type="submit" onClick={this.delete}>delete</button>
+                <div>
+                    <MessageTable message={this.state.message} onselect={this.selectmessage}/>
+                </div>
             </div>
+        }
+    });
+
+    var MessageTable = React.createClass({
+        select: function () {
+            this.props.onselect()
+        },
+        render: function () {
+            return (
+                    <div className="col-md-5 col-md-offset-5">
+                        <button onClick={this.select}>个人信息</button>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td>姓名</td>
+                                <td>{this.props.message.name}</td>
+                            </tr>
+                            <tr>
+                                <td>手机号</td>
+                                <td>{this.props.message.tel}</td>
+
+                            </tr>
+                            <tr>
+                                <td>年龄</td>
+                                <td>{this.props.message.age}</td>
+
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+            );
         }
     });
 
